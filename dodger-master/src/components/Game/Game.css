@@ -1,0 +1,109 @@
+/* Game Container Styling */
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 20px auto;
+  width: fit-content;
+  transition: all 0.5s ease;
+}
+
+/* High Score Glow Effect */
+.game-container.high-score-glow {
+  animation: screenGlow 2s ease-in-out infinite;
+}
+
+@keyframes screenGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.6))
+            drop-shadow(0 0 40px rgba(255, 107, 53, 0.4))
+            drop-shadow(0 0 60px rgba(255, 107, 53, 0.2));
+    transform: scale(1.02);
+  }
+  50% {
+    filter: drop-shadow(0 0 30px rgba(255, 107, 53, 0.8))
+            drop-shadow(0 0 60px rgba(255, 107, 53, 0.6))
+            drop-shadow(0 0 90px rgba(255, 107, 53, 0.4));
+    transform: scale(1.03);
+  }
+}
+
+/* Tooltip Styling - Fullscreen Overlay */
+.game-tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.98);
+  color: #333333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: tooltipFadeIn 0.5s ease-out, tooltipFadeOut 0.8s ease-in 4.2s forwards;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.game-tooltip p {
+  margin: 15px 0;
+  font-size: 24px;
+  text-align: center;
+  color: #555555;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.game-tooltip p:first-child {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+  background: linear-gradient(135deg, #ff6b35, #f7b731);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes textGlow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tooltipFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 850px) {
+  .game-tooltip p {
+    font-size: 18px;
+  }
+  
+  .game-tooltip p:first-child {
+    font-size: 36px;
+  }
+}
