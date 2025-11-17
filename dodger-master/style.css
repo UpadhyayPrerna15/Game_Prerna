@@ -1,0 +1,210 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 10px;
+    gap: 5px;
+}
+
+.game-title {
+    font-size: 2rem;
+    margin-bottom: 5px;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(255, 255, 255, 0.6),
+        3px 3px 8px rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+    color: #00ffff;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.score-box {
+    background: rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    padding: 8px 20px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    min-width: 130px;
+}
+
+.score-box:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.score-box.high-score {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.score-label {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    display: block;
+    margin-bottom: 2px;
+}
+
+#currentScore, #highScore {
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    font-size: 1rem;
+    margin-bottom: 3px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+p {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    max-width: 600px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px 15px;
+    border-radius: 8px;
+}
+
+.game-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.score-left, .score-right {
+    flex-shrink: 0;
+}
+
+#gameArea {
+    position: relative;
+    width: 90vw;
+    max-width: 900px;
+    height: 65vh;
+    max-height: 500px;
+    margin: 0 auto;
+    box-shadow: 
+        0 15px 50px rgba(0, 0, 0, 0.5),
+        0 25px 80px rgba(0, 0, 0, 0.3),
+        inset 0 0 30px rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.4);
+    transform: perspective(1200px) rotateX(3deg);
+    transition: all 0.3s ease;
+    background: rgba(135, 206, 235, 0.3);
+}
+
+#gameArea:hover {
+    transform: perspective(1200px) rotateX(0deg) scale(1.02);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 30px 100px rgba(0, 0, 0, 0.4),
+        inset 0 0 40px rgba(255, 255, 255, 0.2);
+}
+
+#gameCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: linear-gradient(180deg, 
+        rgba(135, 206, 235, 0.9) 0%, 
+        rgba(152, 216, 232, 0.9) 50%,
+        rgba(173, 216, 230, 0.9) 100%);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 1.6rem;
+    }
+    
+    h2 {
+        font-size: 0.9rem;
+    }
+    
+    p {
+        font-size: 0.75rem;
+        padding: 5px 12px;
+    }
+    
+    .game-wrapper {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .score-box {
+        padding: 6px 15px;
+        min-width: 110px;
+    }
+    
+    #currentScore, #highScore {
+        font-size: 1.2rem;
+    }
+    
+    #gameArea {
+        width: 95vw;
+        height: 60vh;
+        max-height: 450px;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-title {
+        font-size: 1.3rem;
+    }
+    
+    .game-wrapper {
+        gap: 8px;
+    }
+    
+    .score-box {
+        padding: 5px 12px;
+        min-width: 90px;
+    }
+    
+    #gameArea {
+        height: 55vh;
+        max-height: 400px;
+    }
+}

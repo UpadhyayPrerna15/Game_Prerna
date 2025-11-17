@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Dodger Master</title>
+</head>
+<body>
+    <div class="content">
+        <h1 class="game-title">🐷 Dodger Master 🦟</h1>
+        <h2>Instructions</h2>
+        <p>Use ⬅️ ➡️ arrow keys to move your pig and dodge the falling mosquitoes!</p>
+        <div class="game-wrapper">
+            <div class="score-box score-left">
+                <span class="score-label">Score:</span>
+                <span id="currentScore">0</span>
+            </div>
+            <div id="gameArea">
+                <canvas id="gameCanvas"></canvas>
+            </div>
+            <div class="score-box score-right high-score">
+                <span class="score-label">High Score:</span>
+                <span id="highScore">0</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
