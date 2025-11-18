@@ -1,6 +1,13 @@
+/**
+ * DODGER MASTER
+ * @author Prerna Upadhyay
+ */
+
+// Canvas setup
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Player object (data structure)
 const player = {
     x: 0,
     y: 0,
@@ -9,16 +16,16 @@ const player = {
     speed: 5
 }
 
-// Mosquitoes array
+// Mosquitoes array (data structure)
 const mosquitoes = [];
 const mosquitoImage = new Image();
 mosquitoImage.src = 'assets/mosquito.png';
 
-// Mosquito properties
+// Game constants
 const mosquitoWidth = 40;
 const mosquitoHeight = 40;
 const mosquitoSpeed = 3;
-const spawnInterval = 1500; // milliseconds
+const spawnInterval = 1500;
 
 // Game state
 let score = 0;
@@ -31,21 +38,18 @@ function resizeCanvas() {
     const gameArea = document.getElementById('gameArea');
     canvas.width = gameArea.clientWidth;
     canvas.height = gameArea.clientHeight;
-    
-    // Update player position
     player.x = canvas.width / 2 - player.width / 2;
     player.y = canvas.height - 80;
 }
 
-// Initial resize
 resizeCanvas();
-
-// Resize on window resize
 window.addEventListener('resize', resizeCanvas);
 
+// Load player image
 const pigImage = new Image();
 pigImage.src = 'assets/pig.png';
 
+// Keyboard input
 const keys = {
     left: false,
     right: false
@@ -61,17 +65,17 @@ document.addEventListener('keyup', (e) =>{
     if(e.key === 'ArrowRight') keys.right = false;
 });
 
+// Update player position
 function updatePlayer(){
     if(keys.left && player.x > 10){
         player.x -= player.speed;
     }
-
     if(keys.right && player.x < canvas.width - player.width - 10){
         player.x += player.speed;
     }
 }
 
-// Spawn mosquitoes
+// Spawn mosquitoes (algorithm)
 function spawnMosquito(currentTime) {
     if (currentTime - lastSpawnTime > spawnInterval) {
         const x = Math.random() * (canvas.width - mosquitoWidth);
@@ -90,25 +94,24 @@ function updateMosquitoes() {
     for (let i = mosquitoes.length - 1; i >= 0; i--) {
         mosquitoes[i].y += mosquitoSpeed;
         
-        // Remove mosquitoes that fall off screen
         if (mosquitoes[i].y > canvas.height) {
             mosquitoes.splice(i, 1);
-            score++; // Increase score when mosquito is dodged
+            score++;
             updateScoreDisplay();
         }
     }
 }
 
-// Check collision
+// Collision detection (AABB algorithm)
 function checkCollision() {
     for (let mosquito of mosquitoes) {
         if (player.x < mosquito.x + mosquito.width &&
             player.x + player.width > mosquito.x &&
             player.y < mosquito.y + mosquito.height &&
             player.y + player.height > mosquito.y) {
+            
             gameOver = true;
             
-            // Update high score
             if (score > highScore) {
                 highScore = score;
                 localStorage.setItem('dodgerHighScore', highScore);
@@ -118,24 +121,22 @@ function checkCollision() {
     }
 }
 
+// Draw functions (Canvas API)
 function drawPlayer(){
     ctx.drawImage(pigImage, player.x, player.y, player.width, player.height);
 }
 
-// Draw mosquitoes
 function drawMosquitoes() {
     for (let mosquito of mosquitoes) {
         ctx.drawImage(mosquitoImage, mosquito.x, mosquito.y, mosquito.width, mosquito.height);
     }
 }
 
-// Update score display
 function updateScoreDisplay() {
     document.getElementById('currentScore').textContent = score;
     document.getElementById('highScore').textContent = highScore;
 }
 
-// Draw score on canvas
 function drawScore() {
     ctx.fillStyle = 'white';
     ctx.font = 'bold 24px Arial';
@@ -145,28 +146,22 @@ function drawScore() {
     ctx.fillText('Score: ' + score, 20, 35);
 }
 
-// Draw game over
 function drawGameOver() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
     ctx.textAlign = 'center';
     
-    // Game Over text with glow effect
     ctx.fillStyle = 'red';
     ctx.font = 'bold 56px Arial';
     ctx.shadowColor = 'rgba(255, 0, 0, 0.8)';
     ctx.shadowBlur = 20;
     ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 50);
-    
     ctx.shadowBlur = 0;
     
-    // Score
     ctx.fillStyle = 'white';
     ctx.font = 'bold 28px Arial';
     ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 10);
     
-    // High score
     if (score === highScore && score > 0) {
         ctx.fillStyle = '#FFD700';
         ctx.font = 'bold 24px Arial';
@@ -177,11 +172,9 @@ function drawGameOver() {
         ctx.fillText('High Score: ' + highScore, canvas.width / 2, canvas.height / 2 + 50);
     }
     
-    // Restart instruction
     ctx.fillStyle = 'lightgreen';
     ctx.font = '20px Arial';
     ctx.fillText('Press SPACEBAR to Restart', canvas.width / 2, canvas.height / 2 + 90);
-    
     ctx.textAlign = 'left';
 }
 
@@ -196,16 +189,16 @@ function restartGame() {
     updateScoreDisplay();
 }
 
-// Listen for restart
 document.addEventListener('keydown', (e) => {
     if (e.key === ' ' || e.code === 'Space') {
         if (gameOver) {
-            e.preventDefault(); // Prevent page scroll
+            e.preventDefault();
             restartGame();
         }
     }
 });
 
+// Main game loop (algorithm)
 function gameLoop(currentTime){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -214,7 +207,6 @@ function gameLoop(currentTime){
         spawnMosquito(currentTime);
         updateMosquitoes();
         checkCollision();
-        
         drawPlayer();
         drawMosquitoes();
         drawScore();
@@ -227,32 +219,17 @@ function gameLoop(currentTime){
     requestAnimationFrame(gameLoop);
 }
 
+// Load images before starting
 let imagesLoaded = 0;
 const totalImages = 2;
 
 function checkImagesLoaded() {
     imagesLoaded++;
     if (imagesLoaded === totalImages) {
-        console.log('All images loaded successfully');
-        updateScoreDisplay(); // Initialize score display
+        updateScoreDisplay();
         gameLoop(0);
     }
 }
 
-pigImage.onerror = () => {
-    console.error('Failed to load pig image!');
-};
-
-pigImage.onload = () => {
-    console.log('Pig image loaded');
-    checkImagesLoaded();
-};
-
-mosquitoImage.onerror = () => {
-    console.error('Failed to load mosquito image!');
-};
-
-mosquitoImage.onload = () => {
-    console.log('Mosquito image loaded');
-    checkImagesLoaded();
-};
+pigImage.onload = () => checkImagesLoaded();
+mosquitoImage.onload = () => checkImagesLoaded();
